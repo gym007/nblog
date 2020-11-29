@@ -1,0 +1,174 @@
+<?php
+
+namespace App\Model;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use sngrl\SphinxSearch\SphinxSearch;
+// use Tag;
+
+class Article extends Model
+{
+    use SoftDeletes;
+
+    protected $table = 'articles';
+
+    public function category()
+    {
+        // return $this->hasOne('App\Model\Category', 'id', 'cate_id');
+        return $this->hasOne('App\Model\Category', 'id', 'cate_id');
+    }
+
+    public function tags()
+    {
+        return $this->belongsToMany('App\Model\Tag', 'articles_tags', 'article_id', 'tag_id' )
+            ->withTimestamps()->using('App\Model\ArticleTag')->withPivot('id');
+            // ->using('App\Model\ArticleTag');
+    }
+
+    // public function comments()
+    // {
+    //     return $this->hasMany('App\Model\Comments', 'article_id', 'bid');
+    // }
+
+    /**
+     * 根据前端传的参数查询文章并返回列表
+     * @param $query
+     */
+    public static function home($request)
+    {
+        $query = $request->all();
+        $cate_id = isset($query['cate_id']) ? (int)$query['cate_id'] : 0;
+        $keyword = isset($query['keyword']) ? (string)$query['keyword'] : '';
+        $tagId = isset($query['tag']) ? (string)$query['tag'] : '';
+        $page = isset($query['page']) ? (int)$query['page'] : 1;
+
+        $returnData = [
+            'articles' => [],
+            'cate_id' => $cate_id,
+            'keyword' => $keyword,
+            'res' => [],
+            'mark' => '',
+        ];
+        $finalCheck = true;
+
+        // dd($tagId);
+
+        if (!empty($cate_id)) {
+            // dd(123);
+            // 根据分类查询文章，将该分类下的所有文章全部检索出来
+            $articles = self::select('id', 'cate_id', 'title', 'content', 'read_times', 'created_at', 'updated_at')
+                ->where('cate_id', $cate_id)
+                ->orderBy('created_at', 'desc')
+                ->with('category:id,cate_title')
+                ->paginate(8);
+            $returnData['res'] = $articles->total() > 0 ? $articles : [];
+            $returnData['mark'] = '分类';
+            $finalCheck = $returnData['res'] ? false : true;
+        }else if (!empty($tagId)) {
+            $tag = Tag::find($tagId);
+            $articleIds = [];
+            foreach ($tag->articles as $article) {
+                $articleIds[] = $article->id;
+            }
+            $articles = self::select('id', 'cate_id', 'title', 'content', 'read_times', 'created_at', 'updated_at')
+                ->whereIn('id', $articleIds)
+                ->orderBy('created_at', 'desc')
+                ->with('category:id,cate_title')
+                ->paginate(8);
+            $returnData['res'] = $articles->total() > 0 ? $articles : [];
+            $returnData['mark'] = '标签';
+            $finalCheck = $returnData['res'] ? false : true;
+
+        }  else if (!empty($keyword)) {
+            // 使用sphinx搜索
+            try {
+                // $sphinx = new \SphinxClient;
+                // $sphinx->setServer("127.0.0.1", 9312);
+                // $sphinx->setMatchMode(SPH_MATCH_ANY);   //匹配模式 ANY为关键词自动拆词，ALL为不拆词匹配（完全匹配）
+                // $sphinx->SetArrayResult ( true );	//返回的结果集为数组
+                // $result = $sphinx->query("test1","*");	//星号为所有索引源
+                // $count=$result['total'];		//查到的结果条数
+                // $time=$result['time'];			//耗时
+                // $arr=$result['matches'];		//结果集
+                // $id='';
+                // for($i=0;$i<$count;$i++){
+                //     $id.=$arr[$i]['id'].',';
+                // }
+                // $id=substr($id,0,-1);
+
+
+
+
+
+
+
+
+                $sphinx = new SphinxSearch();
+                $res = $sphinx->search($keyword, 'test1')
+                    ->limit(10, 0)
+                    // ->setMatchMode(\Sphinx\SphinxClient::SPH_MATCH_EXTENDED)
+                    ->query();
+            } catch (\Exception $e) {
+                dump(123);
+                dd($e);
+            }
+
+            dump($keyword);
+            dump(455);
+            dd($res);
+
+
+
+
+
+            $articles = self::select('id', 'cate_id', 'title', 'content', 'read_times', 'created_at', 'updated_at')
+                ->where('title', 'like', '%' . $keyword . '%')
+                ->orderBy('created_at', 'desc')
+                ->with('category:id,cate_title')
+                ->paginate(8);
+            $returnData['res'] = $articles->total() > 0 ? $articles : [];
+            $returnData['mark'] = '关键词';
+            $finalCheck = $returnData['res'] ? false : true;
+        }
+
+        if ($finalCheck) {
+            // 单纯的而进入文章专栏(或者检索不到想要的数据)就直接把最近的文章拿出去
+            $articles = self::select('id', 'cate_id', 'title', 'content', 'read_times', 'created_at', 'updated_at')
+                ->orderBy('created_at', 'desc')
+                ->with('category:id,cate_title')
+                ->paginate(8);
+            // $returnData['mark'] = '';
+        }
+
+        $returnData['articles'] = $articles;
+
+        return $returnData;
+    }
+
+    /**
+     * 根据传过来的id和标题查找相似文章
+     * @param $title
+     * @param $id
+     * @return array
+     */
+    public static function likes($title, $id)
+    {
+        $others = self::select('id', 'title')->where('id', '<>', $id)->get();
+        $likes = [];
+        if ($others) {
+            $others = $others->toArray();
+            foreach ($others as $other)  {
+                $res = similar_text($title, $other['title'], $percent);
+                $percent = (int)$percent;
+                if ($percent > 39) {
+                    $likes[] = [
+                        'id' => $other['id'],
+                        'title' => $other['title'],
+                    ];
+                }
+            }
+        }
+        return $likes;
+    }
+}
