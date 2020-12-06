@@ -10556,7 +10556,7 @@
 	};
 
 	var token = '123456';
-	var ws = new WebSocket("ws://111.230.7.119:10086?token=" + token);
+	var ws = new WebSocket("ws://47.115.200.142:10086?token=" + token);
 	ws.onopen = function(evt) {
 		ll('connect open');
 	}

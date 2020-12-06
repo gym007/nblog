@@ -61,7 +61,7 @@
 					</dl>
 				</li>
 				<li class="layui-nav-item to-index">
-					<a href="http://111.230.7.119:99/" target="_blank">前台首页</a>
+					<a href="http://www.m2wei.com/" target="_blank">前台首页</a>
 				</li>
 			</ul>
 

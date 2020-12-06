@@ -17,13 +17,15 @@ class IndexController extends Controller
     public function index()
     {
         // // 批量更改全部的文章的图片地址
-        // $ip  = '111.230.7.119';
+        // $ip  = '/111.230.7.119:99/';
         // $articles = Article::all();
         // foreach ($articles as $article) {
         //     // if ($article->id == 43) {
         //         $oldContent = $article->content;
-        //         $article->content = preg_replace('/www.nblog.com/', $ip, $oldContent);
+        //         $article->content = preg_replace($ip, 'www.m2wei.com', $oldContent);
         //         $article->save();
+        //         // $article = Article::query()->find(43);
+        //         // dd($article);
         //     // }
         // }
 

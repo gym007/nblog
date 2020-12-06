@@ -29,7 +29,7 @@
                                 <p class="aboutinfo-nickname">云间阁</p>
                                 <p class="aboutinfo-introduce">一个PHP程序员的个人博客，记录博主学习和成长之路，分享PHP方面技术和源码</p>
                                 <p class="aboutinfo-location"><i class="fa fa-link"></i>&nbsp;&nbsp;<a target="_blank"
-                                                                                                       href="http://www.nblog.com:99">www.nblog.com:99</a>
+                                                                                                       href="http://www.m2wei.com:99">www.m2wei.com:99</a>
                                 </p>
                                 <hr/>
                                 <div class="aboutinfo-contact">
@@ -97,7 +97,7 @@
                                     <img src="{{asset(_HOME_ . '/images/handshake.png')}}" alt="友情链接"/>
                                 </div>
                                 <p class="aboutinfo-nickname">友情链接</p>
-                                <p class="aboutinfo-introduce">Name：云间阁&nbsp;&nbsp;&nbsp;&nbsp;Site：www.nblog.com</p>
+                                <p class="aboutinfo-introduce">Name：云间阁&nbsp;&nbsp;&nbsp;&nbsp;Site：www.m2wei.com</p>
                                 <p class="aboutinfo-location">
                                     <i class="fa fa-close"></i>经常宕机&nbsp;
                                     <i class="fa fa-close"></i>不合法规&nbsp;
