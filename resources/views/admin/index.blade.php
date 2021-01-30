@@ -61,7 +61,7 @@
 					</dl>
 				</li>
 				<li class="layui-nav-item to-index">
-					<a href="http://www.m2wei.com/" target="_blank">前台首页</a>
+					<a href="https://www.m2wei.com/" target="_blank">前台首页</a>
 				</li>
 			</ul>
 

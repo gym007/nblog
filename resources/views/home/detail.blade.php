@@ -64,7 +64,7 @@
                             <hr/>
                             &nbsp; &nbsp; 出自：云间阁
                             <p>
-                                &nbsp; &nbsp; 地址：<a href="http://www.nblog.com:99" target="_blank">www.nblog.com:99</a>
+                                &nbsp; &nbsp; 地址：<a href="http://www.nblog.com" target="_blank">www.nblog.com</a>
                             </p>
                             <p>
                                 &nbsp; &nbsp; 转载请注明出处！<img

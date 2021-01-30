@@ -29,7 +29,7 @@
                                 <p class="aboutinfo-nickname">云间阁</p>
                                 <p class="aboutinfo-introduce">一个PHP程序员的个人博客，记录博主学习和成长之路，分享PHP方面技术和源码</p>
                                 <p class="aboutinfo-location"><i class="fa fa-link"></i>&nbsp;&nbsp;<a target="_blank"
-                                                                                                       href="http://www.m2wei.com:99">www.m2wei.com:99</a>
+                                                                                                       href="https://www.m2wei.com">www.m2wei.com</a>
                                 </p>
                                 <hr/>
                                 <div class="aboutinfo-contact">
