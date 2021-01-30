@@ -125,10 +125,57 @@ class Elastic extends Command
         $client = $clientBuilder->build();
 
         try {
+            // 删除索引
+            $params = ['index' => $index];
+            $client->indices()->delete($params);
+            $this->info('索引删除成功');
+
+
+            $params = [
+                'index' => $index,
+                'body' => [
+                    'settings' => [
+                        'number_of_shards' => 3,
+                        'number_of_replicas' => 2,
+                    ],
+                    'mappings' => [
+                        '_source' => [
+                            'enabled' => true,
+                        ],
+                        'properties' => [
+                            'article_content' => [
+                                'type' => 'text',
+                                'analyzer' => 'ik_max_word',
+                                'fielddata' => true,
+                            ],
+                            'article_created_at' => [
+                                'type' => 'date',
+                                'format' => 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis',
+                            ],
+                            'article_id' => [
+                                'type' => 'integer',
+                            ],
+                            'article_title' => [
+                                'type' => 'text',
+                                'analyzer' => 'ik_max_word',
+                                'fielddata' => true,
+                            ],
+                        ],
+                    ],
+                ],
+            ];
+
+            $client->indices()->create($params);
+
+            $this->info('索引创建成功!');
+
 
             // $articles = Article::select('id', 'cate_id', 'title', 'content', 'read_times', 'created_at', 'updated_at')
             //     ->orderBy('created_at', 'desc')
             //     ->with('category:id,cate_title');
+
+            // 创建库
+
 
             // 先清空所有的数据, 再填充
             $params = [
@@ -147,17 +194,17 @@ class Elastic extends Command
             $params = ['body' => []];
 
             foreach ($articles as $article) {
-                $this->info('正在准备ID='. $article['id'] .' 标题=' . $article['title'] . ' 的内容');
+                $this->info('正在准备ID=' . $article['id'] . ' 标题=' . $article['title'] . ' 的内容');
 
                 $params['body'][] = [
                     'index' => [
                         '_index' => $index,
-                        '_id'    => $article['id'],
+                        '_id' => $article['id'],
                     ]
                 ];
 
                 $params['body'][] = [
-                    'article_id'     => $article['id'],
+                    'article_id' => $article['id'],
                     'article_title' => $article['title'],
                     'article_content' => $article['content'],
                     'article_created_at' => $article['created_at'],
@@ -183,10 +230,6 @@ class Elastic extends Command
 
             // dump($responses);
             return;
-
-
-
-
 
 
             $res = $client->search($params);
