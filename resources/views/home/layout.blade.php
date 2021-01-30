@@ -13,7 +13,7 @@
     <link href="{{asset(_HOME_ . '/plug/font-awesome/css/font-awesome.min.css')}}" rel="stylesheet" />
     <!--全局样式表-->
     <link href="{{asset(_HOME_ . '/css/global.css')}}" rel="stylesheet" />
-    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.min.css">
 
 
     <!-- 本页样式文件 -->
