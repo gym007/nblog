@@ -176,7 +176,7 @@
     </div>
     <!-- 底部 -->
     <footer class="blog-footer">
-        <p><span>Copyright</span><span>&copy;</span><span>2020</span><a href="https://www.m2wei.com">云间阁</a><span>Design By LockHeart</span></p>
+        <p><span>Copyright</span><span>&copy;</span><span>2020</span><a href="https://www.m2wei.com">云间阁</a><span>Designed By LockHeart</span></p>
         <p><a href="https://beian.miit.gov.cn" target="_blank">鄂ICP备2020020550号-1</a></p>
     </footer>
     <!--侧边导航-->
