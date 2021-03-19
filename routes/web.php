@@ -11,6 +11,8 @@
 |
 */
 
+use Illuminate\Support\Facades\Route;
+
 // 前台
 Route::prefix('/')->group(function () {
     // 首页
@@ -29,7 +31,10 @@ Route::prefix('/')->group(function () {
     Route::post('comments', 'Home\IndexController@comments');
     // 获取评论
     Route::get('getComments/{id}', 'Home\IndexController@getComments');
-});
+
+    // 下载文件
+    Route::get('/download/{file_name}', 'Home\IndexController@download');
+}, null);
 
 
 // 后台登录

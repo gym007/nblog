@@ -353,4 +353,9 @@ class IndexController extends Controller
         $returnData['data'] = $comments;
         return response()->json($returnData);
     }
+
+    public function download(Request $request, $file_name)
+    {
+        return response()->download(realpath(base_path('public')) . '/static/download/' . $file_name);
+    }
 }
